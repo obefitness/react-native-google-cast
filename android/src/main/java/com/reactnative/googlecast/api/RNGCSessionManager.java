@@ -87,6 +87,12 @@ public class RNGCSessionManager
     getReactApplicationContext().runOnUiQueueThread(new Runnable() {
       @Override
       public void run() {
+        // https://github.com/react-native-google-cast/react-native-google-cast/pull/496
+        if (!RNGCCastContext.isCastApiAvailable(getReactApplicationContext())) {
+          promise.resolve(null);
+          return;
+        }
+
         SessionManager sessionManager =
           CastContext.getSharedInstance(getReactApplicationContext())
             .getSessionManager();
